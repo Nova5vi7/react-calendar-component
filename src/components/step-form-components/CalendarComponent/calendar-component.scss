@@ -75,6 +75,7 @@
     }
 
     .react-calendar__month-view__days__day--neighboringMonth {
+      opacity: 0.5;
       color: #757575;
       text-decoration: line-through;
     }
