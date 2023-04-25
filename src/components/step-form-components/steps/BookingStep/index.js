@@ -6,7 +6,7 @@ import BookingLink from "../../BookingLink";
 const BookingStep = (props) => {
     return (
         <div className='booking-block'>
-            <StepBlockTitle titleText='Bitte wahle eine Buchungsoption'/>
+            <StepBlockTitle titleText=''/>
             <BookingLink
                 bookingName="Tagesticket"
                 tariffPlanName="Ein Tag"

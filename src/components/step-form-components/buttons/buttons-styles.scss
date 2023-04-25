@@ -1,0 +1,42 @@
+button {
+  border: none;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.green-button {
+  max-width: 228px;
+  width: 100%;
+  background: #B2EC37;
+  padding: 16px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: 'ProximaNova-Semibold', sans-serif;
+  font-size: 20px;
+  line-height: 1.2;
+  color: #000000;
+
+  svg {
+    width: 24px;
+  }
+}
+
+.test-button {
+  font-family: 'ProximaNova-Semibold', sans-serif;
+  font-size: 18px;
+  line-height: 1.33;
+  color: #000000;
+}
+
+.back-button {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+
+  svg {
+    width: 24px;
+  }
+}
