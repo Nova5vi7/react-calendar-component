@@ -6,7 +6,8 @@ const Home = () => {
     return (
         <div className='content-container'>
             <BookingStep/>
-            <CalendarStep/>
+            <CalendarStep fixedTime={true}/>
+            <CalendarStep fixedTime={false}/>
         </div>
     )
 }

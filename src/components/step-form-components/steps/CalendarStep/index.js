@@ -8,11 +8,11 @@ import BackButton from "../../buttons/BackButton";
 import CalendarComponent from "../../CalendarComponent";
 import "./calendar-step.scss";
 
-const CalendarStep = (props) => {
+const CalendarStep = ({fixedTime}) => {
     return (
         <div className='calendar-block'>
             <StepBlockTitle titleText='Tagesticket'/>
-            <CalendarComponent/>
+            <CalendarComponent fixedTime={fixedTime}/>
             <div className="btn-wrap">
                 <BackButton/>
                 <TextButton

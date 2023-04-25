@@ -1,0 +1,52 @@
+.time-range {
+  display: flex;
+  flex-direction: row;
+
+  .time-table {
+    border: 1px solid #3c3e48;
+    border-radius: 0.5rem;
+    width: 100%;
+    min-height: 122px;
+    margin-right: 15px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    .block-t {
+      width: 100%;
+      color: #7f878e;
+      font-family: 'ProximaNova-Semibold', sans-serif;
+      border-bottom: 1px solid #3c3e48;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+    }
+
+    .time-list-wrap {
+      min-height: 75px;
+      max-height: 75px;
+      overflow: scroll;
+    }
+
+    .time-list {
+      li {
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'ProximaNova-Semibold', sans-serif;
+        font-size: 16px;
+        //color: #6494ff;
+        color: #777777;
+
+        cursor: pointer;
+
+        &:hover {
+          background: rgba(75,130,255,0.1);
+        }
+      }
+    }
+  }
+}

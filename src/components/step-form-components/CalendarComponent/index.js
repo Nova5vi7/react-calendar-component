@@ -1,9 +1,11 @@
 import React from 'react';
 import Calendar from "react-calendar";
+import TimeTable from "../TimeTable";
+import TimeRange from "../TimeRange";
 import 'react-calendar/dist/Calendar.css';
 import "./calendar-component.scss";
 
-const CalendarComponent = (props) => {
+const CalendarComponent = ({fixedTime}) => {
     return (
         <div className="calendar-wrap">
             <div className="data-result">
@@ -48,14 +50,10 @@ const CalendarComponent = (props) => {
                 locale='de'
                 selectRange={true}
             />
-            <div className="time-table">
-                <div className="block-t">
-                    Di. 25.04.2023
-                </div>
-                <ul className="time-list">
-                    <li>09:00 - 18:00</li>
-                </ul>
-            </div>
+            {
+                fixedTime ?
+                    <TimeTable/> : <TimeRange/>
+            }
         </div>
     );
 }
