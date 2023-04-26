@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {useState, useEffect} from 'react';
 import StepBlockTitle from "../../StepBlockTitle";
 import BookingLink from "../../BookingLink";
 import CalendarComponent from "../../CalendarComponent";
@@ -6,6 +6,7 @@ import FormComponent from "../../FormComponent";
 import "./booking-step.scss";
 
 const BookingStep = () => {
+    const [inputValue, setInputValue] = useState('');
     const [activeBooking, setActiveBooking] = useState(0);
     const [isCalendarStep, setCalendarStepStatus] = useState(false);
     const [isFormStep, setFormStepStatus] = useState(false);
@@ -39,6 +40,14 @@ const BookingStep = () => {
         },
     ]
 
+    useEffect(() => {
+        // Use XPath to get the value of the input element
+        const inputElement = document.evaluate('//input[@id="my-input"]', document, null,
+            XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+        const inputValue = inputElement.value;
+        setInputValue(inputValue);
+    }, []);
+
     const setCalendarStep = (bookingId) => {
         setActiveBooking(bookingId)
         setCalendarStepStatus(true)
@@ -56,7 +65,7 @@ const BookingStep = () => {
         setFormStepStatus(false)
     }
 
-    console.log(activeBooking, bookingData[activeBooking].calendarSettings)
+    console.log(inputValue)
 
     return (
         <div className='booking-block'>
