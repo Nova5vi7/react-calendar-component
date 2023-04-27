@@ -1,8 +1,15 @@
 import "./booking-link.scss";
 
-const BookingLink = ({bookingId, bookingName, tariffPlanName, tariffPlanValue, onClick}) => {
+const BookingLink = ({
+                         bookingId,
+                         bookingIndex,
+                         bookingName,
+                         tariffPlanName,
+                         tariffPlanValue,
+                         onClick,
+                     }) => {
     return (
-        <div className='booking-link-block' onClick={() => onClick(bookingId)}>
+        <div className='booking-link-block' onClick={() => onClick(bookingIndex, bookingId)}>
             <div className="block-l">
                 <h4 className="booking-name">
                     {bookingName}

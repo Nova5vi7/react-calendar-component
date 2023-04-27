@@ -10,6 +10,11 @@ const BookingStep = () => {
     const [activeBooking, setActiveBooking] = useState(0);
     const [isCalendarStep, setCalendarStepStatus] = useState(false);
     const [isFormStep, setFormStepStatus] = useState(false);
+    const [currentBooking, setCurrentBooking] = useState(null);
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
+    const [startHour, setStartHour] = useState(null);
+    const [endHour, setEndHour] = useState(null);
 
     useEffect(() => {
         // Use XPath to get the value of the input element
@@ -19,8 +24,9 @@ const BookingStep = () => {
         setBookingData(inputValue);
     }, []);
 
-    const setCalendarStep = (bookingId) => {
-        setActiveBooking(bookingId)
+    const setCalendarStep = (bookingIndex, bookingId) => {
+        setActiveBooking(bookingIndex)
+        setCurrentBooking(bookingId)
         setCalendarStepStatus(true)
     }
 
@@ -36,13 +42,26 @@ const BookingStep = () => {
         setFormStepStatus(false)
     }
 
+    const onChangeDate = (value) => {
+        setStartDate(value[0])
+        setEndDate(value[1])
+    }
+
+    const onChangeStartHour = (value) => {
+        setStartHour(value)
+    }
+
+    const onChangeEndHour = (value) => {
+        setEndHour(value)
+    }
+
     if(!bookingData.length) {
         return (
             <p>Loading...</p>
         )
     }
 
-    console.log(bookingData)
+    console.log(bookingData, currentBooking)
 
     return (
         <div className='booking-block'>
@@ -52,10 +71,11 @@ const BookingStep = () => {
                 bookingData.map((itm, index) => {
                     return (
                         <BookingLink
+                            bookingIndex={index}
                             bookingId={itm.id}
-                            bookingName={itm.bookingName}
+                            bookingName={itm.title}
                             tariffPlanName={itm.tariffPlanName}
-                            tariffPlanValue={itm.tariffPlanValue}
+                            tariffPlanValue={itm.price/100}
                             onClick={setCalendarStep}
                             key={index}
                         />
@@ -65,9 +85,16 @@ const BookingStep = () => {
             {
                 isCalendarStep && !isFormStep &&
                 <CalendarComponent
-                    settings={bookingData[activeBooking].calendarSettings}
+                    settings={bookingData[activeBooking].calendar_settings}
                     backButtonClick={backToStepBooking}
                     setStep={setFormStep}
+                    onChange={onChangeDate}
+                    startDate={startDate}
+                    endDate={endDate}
+                    startHour={startHour}
+                    endHour={endHour}
+                    onChangeStartHour={onChangeStartHour}
+                    onChangeEndHour={onChangeEndHour}
                 />
             }
             {isFormStep && <FormComponent backToStepCalendar={backToStepCalendar}/>}

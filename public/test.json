@@ -1,0 +1,92 @@
+[
+  {
+    "id": 46571331256669,
+    "title": "Tagesticket",
+    "option1": "Tagesticket",
+    "option2": null,
+    "option3": null,
+    "sku": null,
+    "requires_shipping": false,
+    "taxable": true,
+    "featured_image": null,
+    "available": true,
+    "name": "Coworking - Tagesticket",
+    "public_title": "Tagesticket",
+    "options": [
+      "Tagesticket"
+    ],
+    "calendar_settings": {
+      "view": "month"
+    },
+    "price": 2500,
+    "weight": 0,
+    "compare_at_price": null,
+    "inventory_management": null,
+    "barcode": null,
+    "quantity_rule": {
+      "min": 1,
+      "max": null,
+      "increment": 1
+    }
+  },
+  {
+    "id": 46571331289437,
+    "title": "Monatsticket",
+    "option1": "Monatsticket",
+    "option2": null,
+    "option3": null,
+    "sku": null,
+    "requires_shipping": false,
+    "taxable": true,
+    "featured_image": null,
+    "available": true,
+    "name": "Coworking - Monatsticket",
+    "public_title": "Monatsticket",
+    "options": [
+      "Monatsticket"
+    ],
+    "calendar_settings": {
+      "view": "year"
+    },
+    "price": 29900,
+    "weight": 0,
+    "compare_at_price": null,
+    "inventory_management": null,
+    "barcode": null,
+    "quantity_rule": {
+      "min": 1,
+      "max": null,
+      "increment": 1
+    }
+  },
+  {
+    "id": 46571331322205,
+    "title": "Jahresticket",
+    "option1": "Jahresticket",
+    "option2": null,
+    "option3": null,
+    "sku": null,
+    "requires_shipping": false,
+    "taxable": true,
+    "featured_image": null,
+    "available": true,
+    "name": "Coworking - Jahresticket",
+    "public_title": "Jahresticket",
+    "options": [
+      "Jahresticket"
+    ],
+    "calendar_settings": {
+      "view": "decade"
+    },
+    "price": 322800,
+    "weight": 0,
+    "compare_at_price": null,
+    "inventory_management": null,
+    "barcode": null,
+    "quantity_rule": {
+      "min": 1,
+      "max": null,
+      "increment": 1
+    }
+  }
+]
