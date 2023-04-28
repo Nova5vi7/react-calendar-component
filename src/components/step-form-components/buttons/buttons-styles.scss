@@ -23,18 +23,24 @@ button {
   }
 }
 
-.test-button {
-  font-family: 'ProximaNova-Semibold', sans-serif;
-  font-size: 18px;
-  line-height: 1.33;
-  color: #000000;
-}
-
 .back-button {
-  width: 24px;
-  height: 24px;
   display: flex;
   align-items: center;
+  font-family: 'ProximaNova-Semibold', sans-serif;
+  font-size: 16px;
+  line-height: 1.33;
+  color: #000000;
+
+  &.version-two {
+    width: 24px;
+    height: 24px;
+  }
+
+  &.version-one {
+    svg {
+      margin-right: 50px;
+    }
+  }
 
   svg {
     width: 24px;

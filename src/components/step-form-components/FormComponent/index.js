@@ -1,10 +1,17 @@
 import Counter from "../Counter";
-import "./form-component.scss";
-import BackButton from "../buttons/BackButton";
-import React from "react";
+import BackButtonVersionTwo from "../buttons/BackButtonVersionTwo";
 import GreenButton from "../buttons/GreenButton";
+import "./form-component.scss";
 
-const FormComponent = ({backToStepCalendar}) => {
+const FormComponent = ({
+                           extrasData,
+                           backToStepCalendar,
+                           personCount,
+                           setPersonCount,
+                           updateExtrasValue,
+                           activeExtras,
+                           submitForm
+                       }) => {
     return (
         <div className='form-wrap'>
             <div className="form-block">
@@ -12,7 +19,10 @@ const FormComponent = ({backToStepCalendar}) => {
                     <span>
                         Anzahl Personen
                     </span>
-                    <Counter/>
+                    <Counter
+                        personCount={personCount}
+                        setPersonCount={setPersonCount}
+                    />
                 </div>
             </div>
             <div className="form-block">
@@ -20,52 +30,29 @@ const FormComponent = ({backToStepCalendar}) => {
                     Extras
                 </span>
                 <div className="extras-list">
-                    <div className="extra-item">
-                        <span>
-                            +10 €
-                        </span>
-                        <p>
-                            Gastronomie
-                        </p>
-                    </div>
-                    <div className="extra-item active-extra">
-                        <span>
-                            +5 €
-                        </span>
-                        <p>
-                            Getränke
-                        </p>
-                    </div>
-                    <div className="extra-item">
-                        <span>
-                            +2 €
-                        </span>
-                        <p>
-                            Drucker
-                        </p>
-                    </div>
-                    <div className="extra-item">
-                        <span>
-                            +2 €
-                        </span>
-                        <p>
-                            Drucker
-                        </p>
-                    </div>
-                    <div className="extra-item">
-                        <span>
-                            +10 €
-                        </span>
-                        <p>
-                            Gastronomie
-                        </p>
-                    </div>
+                    {
+                        extrasData.map(itm => {
+                            //active-extra
+                            return (
+                                <div className={`extra-item ${activeExtras.includes(itm) ? 'active-extra' : ''}`} onClick={() => updateExtrasValue(itm)} key={itm.id}>
+                                    <span>
+                                        +{itm.extra_item_price} €
+                                    </span>
+                                    <p>
+                                        {itm.extra_item_text}
+                                    </p>
+                                </div>
+                            )
+                        })
+                    }
                 </div>
             </div>
             <div className="btn-wrap">
-                <BackButton onClick={backToStepCalendar}/>
+                <BackButtonVersionTwo onClick={backToStepCalendar}/>
                 <GreenButton
                     btnText='Weiter'
+                    btnType='submit'
+                    onClick={submitForm}
                 />
             </div>
         </div>
