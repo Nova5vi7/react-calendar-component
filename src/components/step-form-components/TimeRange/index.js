@@ -3,8 +3,11 @@ import moment from "moment";
 import {formatDateData} from "../../../helpers/format-date-data";
 
 const TimeRange = ({
+                       startHour,
                        startDate,
                        endDate,
+                       startTimesList,
+                       endTimesList,
                        onChangeStartHour,
                        onChangeEndHour
                    }) => {
@@ -18,14 +21,19 @@ const TimeRange = ({
                 </div>
                 <div className="time-list-wrap">
                     <ul className="time-list">
-                        <li onClick={() => onChangeStartHour('16:00')}>16:00</li>
-                        <li onClick={() => onChangeStartHour('16:30')}>16:30</li>
-                        <li onClick={() => onChangeStartHour('17:00')}>17:00</li>
-                        <li onClick={() => onChangeStartHour('17:30')}>17:30</li>
+                        {
+                            startTimesList.map(startTime => {
+                                const {time_value, time_status} = startTime;
+                                if(time_value === '18:00') return;
+                                return (
+                                    <li className={time_status ? 'active' : ''} onClick={() => onChangeStartHour(startTime)} key={time_value}>{time_value}</li>
+                                )
+                            })
+                        }
                     </ul>
                 </div>
             </div>
-            <div className="time-table">
+            <div className={`time-table ${startHour ? '' : 'disabled'}`}>
                 <div className="block-t">
                     {endDate ?
                         moment(endDate).locale('de').format("dd") + '.' + " " + formatDateData(endDate)
@@ -33,10 +41,14 @@ const TimeRange = ({
                 </div>
                 <div className="time-list-wrap">
                     <ul className="time-list">
-                        <li onClick={() => onChangeEndHour('17:00')}>17:00</li>
-                        <li onClick={() => onChangeEndHour('17:30')}>17:30</li>
-                        <li onClick={() => onChangeEndHour('18:00')}>18:00</li>
-                        <li onClick={() => onChangeEndHour('18:30')}>18:30</li>
+                        {
+                            endTimesList.map(endTime => {
+                                const {time_value, time_status} = endTime;
+                                return (
+                                    <li className={time_status ? 'active' : ''} onClick={() => onChangeEndHour(endTime)} key={time_value}>{time_value}</li>
+                                )
+                            })
+                        }
                     </ul>
                 </div>
             </div>

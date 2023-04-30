@@ -4,6 +4,7 @@ import StepBlockTitle from "../../StepBlockTitle";
 import BookingLink from "../../BookingLink";
 import CalendarComponent from "../../CalendarComponent";
 import FormComponent from "../../FormComponent";
+import timestampFilter from "../../../../helpers/timestamp-filter";
 import "./booking-step.scss";
 
 const BookingStep = () => {
@@ -19,19 +20,34 @@ const BookingStep = () => {
     const [endHour, setEndHour] = useState(null);
     const [personCount, setPersonCount] = useState(1);
     const [activeExtras, setActiveExtras] = useState([]);
+    const [timesList, setTimesList] = useState([]);
+    const [startTimesList, setStartTimesList] = useState([]);
+    const [endTimesList, setEndTimesList] = useState([]);
 
     useEffect(() => {
         // Use XPath to get the value of the input element
         const inputElement = document.evaluate('//input[@id="my-input"]', document, null,
             XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
         const inputValue = JSON.parse(inputElement.value);
+        setTimesList(timeListGeneration(inputValue[0].times_list));
+        setStartTimesList(timeListGeneration(inputValue[0].times_list));
+        setEndTimesList(timeListGeneration(inputValue[0].times_list));
         setBookingData(inputValue);
     }, []);
 
-    const setCalendarStep = (bookingIndex, bookingId) => {
+    const timeListGeneration = (timeList, setStartTimesList, setEndTimesList) => {
+        // const currentTime = moment().format("HH:mm");
+        const currentTime = '10:25';
+        return timeList.filter(timeObj => {
+            const {time_value} = timeObj;
+            return timestampFilter(currentTime, time_value, timeObj);
+        });
+    };
+
+    const setCalendarStep = (bookingIndex) => {
         setActiveBooking(bookingIndex)
         setCalendarStepStatus(true)
-    }
+    };
 
     const setFormStep = (view) => {
         if (view === 'month') {
@@ -49,7 +65,7 @@ const BookingStep = () => {
                 setFormStepStatus(true);
             }
         }
-    }
+    };
 
     const backToStepBooking = () => {
         setCalendarStepStatus(false)
@@ -59,13 +75,13 @@ const BookingStep = () => {
         setEndHour(null);
         setCurrentMonth(null);
         setCurrentYear(null);
-    }
+    };
 
     const backToStepCalendar = () => {
         setFormStepStatus(false)
         setActiveExtras([])
         setPersonCount(1)
-    }
+    };
 
     const backToFirstStep = () => {
         setCalendarStepStatus(false);
@@ -78,30 +94,63 @@ const BookingStep = () => {
         setEndHour(null);
         setCurrentMonth(null);
         setCurrentYear(null);
-    }
+    };
 
     const onChangeDate = (value) => {
         setStartDate(value[0])
         setEndDate(value[1])
-    }
+    };
 
-    const onChangeStartHour = (value) => {
-        setStartHour(value)
-    }
+    const onChangeStartHour = (timeData) => {
+        setEndHour(null);
+        const newStartTimesList = [...startTimesList];
+        const endTimesListCopy = [...timesList];
+        const timeItemIndex = newStartTimesList.indexOf(timeData);
+        const newTimeObj = Object.assign({}, timeData);
 
-    const onChangeEndHour = (value) => {
-        setEndHour(value)
-    }
+        newTimeObj.time_status = true;
+        newStartTimesList.map(itm => {
+            itm.time_status = false;
+            return itm;
+        })
+        newStartTimesList.splice(timeItemIndex, 1, newTimeObj);
+
+        const {time_value} = timeData
+        const newEndTimesList = endTimesListCopy.filter(timeObj => {
+            return timestampFilter(time_value, timeObj.time_value, timeObj);
+        })
+
+        setStartTimesList(newStartTimesList);
+        setEndTimesList(newEndTimesList);
+        setStartHour(time_value)
+    };
+
+    const onChangeEndHour = (timeData) => {
+        const {time_value} = timeData
+        const endTimesListCopy = [...endTimesList];
+        const timeItemIndex = endTimesListCopy.indexOf(timeData);
+        const newTimeObj = Object.assign({}, timeData);
+
+        newTimeObj.time_status = true;
+        endTimesListCopy.map(itm => {
+            itm.time_status = false;
+            return itm;
+        })
+        endTimesListCopy.splice(timeItemIndex, 1, newTimeObj);
+
+        setEndTimesList(endTimesListCopy);
+        setEndHour(time_value)
+    };
 
     const onClickMonth = (value) => {
         const month = moment(value).format('MMMM');
         setCurrentMonth(month)
-    }
+    };
 
     const onClickYear = (value) => {
         const year = moment(value).format('YYYY');
         setCurrentYear(year);
-    }
+    };
 
     const updateExtrasValue = (value) => {
         const extrasValue = [...activeExtras];
@@ -112,7 +161,7 @@ const BookingStep = () => {
             extrasValue.splice(elementIndex, 1);
         }
         setActiveExtras(extrasValue)
-    }
+    };
 
     const submitForm = () => {
         const {id, price, calendar_settings} = bookingData[activeBooking];
@@ -175,7 +224,7 @@ const BookingStep = () => {
 
         formElement.submit();
         backToFirstStep();
-    }
+    };
 
     if (!bookingData.length) {
         return (
@@ -217,6 +266,8 @@ const BookingStep = () => {
                     onChangeEndHour={onChangeEndHour}
                     onClickMonth={onClickMonth}
                     onClickYear={onClickYear}
+                    startTimesList={startTimesList}
+                    endTimesList={endTimesList}
                 />
             }
             {

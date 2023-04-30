@@ -20,7 +20,9 @@ const CalendarComponent = ({
                                onChangeStartHour,
                                onChangeEndHour,
                                onClickMonth,
-                               onClickYear
+                               onClickYear,
+                               startTimesList,
+                               endTimesList
                            }) => (
     <div className='calendar-block'>
         <div className="calendar-wrap">
@@ -79,17 +81,22 @@ const CalendarComponent = ({
             }
             <Calendar
                 locale='de'
-                selectRange={true}
+                selectRange={settings.view === 'month'}
                 view={settings.view}
                 onChange={onChange}
                 onClickMonth={onClickMonth}
                 onClickYear={onClickYear}
+                minDate={new Date()}
+                defaultValue={new Date()}
             />
             {
                 settings.view === 'month' ?
                     <TimeRange
+                        startHour={startHour}
                         startDate={startDate}
                         endDate={endDate}
+                        startTimesList={startTimesList}
+                        endTimesList={endTimesList}
                         onChangeStartHour={onChangeStartHour}
                         onChangeEndHour={onChangeEndHour}
                     />

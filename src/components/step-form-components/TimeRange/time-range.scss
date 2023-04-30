@@ -3,6 +3,7 @@
   flex-direction: row;
 
   .time-table {
+    position: relative;
     border: 1px solid #3c3e48;
     border-radius: 0.5rem;
     width: 100%;
@@ -11,6 +12,20 @@
 
     &:last-child {
       margin-right: 0;
+    }
+
+    &.disabled:before {
+      content: '';
+      position: absolute;
+      top: 40px;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 2;
+      background-color: gray;
+      opacity: 0.5;
+      cursor: not-allowed;
+      border-radius: 0 0 0.45rem 0.45rem;
     }
 
     .block-t {
@@ -38,10 +53,12 @@
         justify-content: center;
         font-family: 'ProximaNova-Semibold', sans-serif;
         font-size: 16px;
-        //color: #6494ff;
         color: #777777;
-
         cursor: pointer;
+
+        &.active {
+          color: #6494ff;
+        }
 
         &:hover {
           background: rgba(75,130,255,0.1);

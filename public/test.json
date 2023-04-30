@@ -36,6 +36,84 @@
         "extra_item_price": 2
       }
     ],
+    "times_list": [
+      {
+        "time_value": "9:00",
+        "time_status": false
+      },
+      {
+        "time_value": "9:30",
+        "time_status": false
+      },
+      {
+        "time_value": "10:00",
+        "time_status": false
+      },
+      {
+        "time_value": "10:30",
+        "time_status": false
+      },
+      {
+        "time_value": "11:00",
+        "time_status": false
+      },
+      {
+        "time_value": "11:30",
+        "time_status": false
+      },
+      {
+        "time_value": "12:00",
+        "time_status": false
+      },
+      {
+        "time_value": "12:30",
+        "time_status": false
+      },
+      {
+        "time_value": "13:00",
+        "time_status": false
+      },
+      {
+        "time_value": "13:30",
+        "time_status": false
+      },
+      {
+        "time_value": "14:00",
+        "time_status": false
+      },
+      {
+        "time_value": "14:30",
+        "time_status": false
+      },
+      {
+        "time_value": "15:00",
+        "time_status": false
+      },
+      {
+        "time_value": "15:30",
+        "time_status": false
+      },
+      {
+        "time_value": "16:00",
+        "time_status": false
+      },
+      {
+        "time_value": "16:30",
+        "time_status": false
+      },
+      {
+        "time_value": "17:00",
+        "time_status": false
+      },
+      {
+        "time_value": "17:30",
+        "time_status": false
+      },
+      {
+        "time_value": "18:00",
+        "time_status": false
+      }
+    ],
     "price": 2500,
     "weight": 0,
     "compare_at_price": null,
