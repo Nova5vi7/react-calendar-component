@@ -5,11 +5,13 @@ import BookingLink from "../../BookingLink";
 import CalendarComponent from "../../CalendarComponent";
 import FormComponent from "../../FormComponent";
 import timestampFilter from "../../../../helpers/timestamp-filter";
+import {CSSTransition} from "react-transition-group";
 import "./booking-step.scss";
 
 const BookingStep = () => {
     const [bookingData, setBookingData] = useState([]);
     const [activeBooking, setActiveBooking] = useState(0);
+    const [firstStep, setFirstStep] = useState(true)
     const [isCalendarStep, setCalendarStepStatus] = useState(false);
     const [isFormStep, setFormStepStatus] = useState(false);
     const [startDate, setStartDate] = useState(null);
@@ -23,6 +25,8 @@ const BookingStep = () => {
     const [timesList, setTimesList] = useState([]);
     const [startTimesList, setStartTimesList] = useState([]);
     const [endTimesList, setEndTimesList] = useState([]);
+    const [transitionFirstStep, setTransitionFirstStep] = useState(false);
+    const [transitionCalendarStep, setTransitionCalendarStep] = useState(false);
 
     useEffect(() => {
         // Use XPath to get the value of the input element
@@ -45,6 +49,7 @@ const BookingStep = () => {
     };
 
     const setCalendarStep = (bookingIndex) => {
+        setTransitionFirstStep(true);
         setActiveBooking(bookingIndex)
         setCalendarStepStatus(true)
     };
@@ -53,21 +58,26 @@ const BookingStep = () => {
         if (view === 'month') {
             if (startDate && endDate && startHour && endHour) {
                 setFormStepStatus(true);
+                setTransitionCalendarStep(true);
             }
         }
         if (view === 'year') {
             if (currentMonth) {
                 setFormStepStatus(true);
+                setTransitionCalendarStep(true);
             }
         }
         if (view === 'decade') {
             if (currentYear) {
                 setFormStepStatus(true);
+                setTransitionCalendarStep(true);
             }
         }
     };
 
     const backToStepBooking = () => {
+        setFirstStep(true);
+        setTransitionFirstStep(false);
         setCalendarStepStatus(false)
         setStartDate(null);
         setEndDate(null);
@@ -79,11 +89,16 @@ const BookingStep = () => {
 
     const backToStepCalendar = () => {
         setFormStepStatus(false)
+        setCalendarStepStatus(true);
+        setTransitionCalendarStep(false);
         setActiveExtras([])
         setPersonCount(1)
     };
 
     const backToFirstStep = () => {
+        setFirstStep(true);
+        setTransitionFirstStep(false);
+        setTransitionCalendarStep(false);
         setCalendarStepStatus(false);
         setFormStepStatus(false);
         setActiveExtras([]);
@@ -169,7 +184,7 @@ const BookingStep = () => {
         const filterPrice = price / 100;
 
         const isInputCreated = document.querySelectorAll('[name^="extra-"]');
-        if(isInputCreated.length) {
+        if (isInputCreated.length) {
             isInputCreated.forEach(element => {
                 element.remove();
             });
@@ -181,7 +196,7 @@ const BookingStep = () => {
         const itemDate = document.getElementById("item-date");
         const itemTime = document.getElementById("item-time");
 
-        if(calendar_settings.view === 'month') {
+        if (calendar_settings.view === 'month') {
             const momentStartDate = moment(startDate).format("YYYY-MM-DD");
             const momentEndDate = moment(endDate).format("YYYY-MM-DD");
             const finalStartDate = moment(startDate).format("DD.MM.YYYY");
@@ -197,11 +212,11 @@ const BookingStep = () => {
             itemTime.value = "9:00-18:00"
         }
 
-        if(calendar_settings.view === 'year') {
+        if (calendar_settings.view === 'year') {
             itemDate.value = `${currentMonth}`;
         }
 
-        if(calendar_settings.view === 'decade') {
+        if (calendar_settings.view === 'decade') {
             itemDate.value = `${currentYear}`;
         }
 
@@ -222,9 +237,23 @@ const BookingStep = () => {
 
         itemId.value = id;
 
-        formElement.submit();
+        // formElement.submit();
         backToFirstStep();
     };
+
+    const onExited = (node) => {
+        if(!node) return;
+        node.style.position = 'relative';
+        node.style.opacity = 1;
+        node.style.transform = "translateX(0)"
+    }
+
+    const onEnter = (node) => {
+        if(!node) return;
+        node.style.position = 'absolute';
+        node.style.opacity = 0;
+        node.style.transform = "translateX(-100%)"
+    }
 
     if (!bookingData.length) {
         return (
@@ -232,44 +261,74 @@ const BookingStep = () => {
         )
     }
 
+    // console.log('transitionState', transitionState)
+
     return (
         <div className='booking-block'>
             <StepBlockTitle titleText=''/>
-            {
-                !isCalendarStep &&
-                bookingData.map((itm, index) => {
-                    return (
-                        <BookingLink
-                            bookingIndex={index}
-                            bookingId={itm.id}
-                            bookingName={itm.title}
-                            tariffPlanName={itm.tariff_plan_name}
-                            tariffPlanValue={itm.price / 100}
-                            onClick={setCalendarStep}
-                            key={index}
-                        />
+            <CSSTransition
+                in={transitionFirstStep}
+                timeout={0}
+                classNames={{
+                    enterActive: 'animate__bounceIn',
+                    exitActive: 'animate__bounceOut'
+                }}
+                onEnter={onEnter}
+                onExited={onExited}>
+                {
+                    () => (
+                        firstStep &&
+                        <div className='booking-links-wrap'>
+                            {
+                                bookingData.map((itm, index) => {
+                                    return (
+                                        <BookingLink
+                                            bookingIndex={index}
+                                            bookingId={itm.id}
+                                            bookingName={itm.title}
+                                            tariffPlanName={itm.tariff_plan_name}
+                                            tariffPlanValue={itm.price / 100}
+                                            onClick={setCalendarStep}
+                                            key={index}
+                                        />
+                                    )
+                                })
+                            }
+                        </div>
                     )
-                })
-            }
-            {
-                isCalendarStep && !isFormStep &&
-                <CalendarComponent
-                    settings={bookingData[activeBooking].calendar_settings}
-                    backButtonClick={backToStepBooking}
-                    setStep={setFormStep}
-                    onChange={onChangeDate}
-                    startDate={startDate}
-                    endDate={endDate}
-                    startHour={startHour}
-                    endHour={endHour}
-                    onChangeStartHour={onChangeStartHour}
-                    onChangeEndHour={onChangeEndHour}
-                    onClickMonth={onClickMonth}
-                    onClickYear={onClickYear}
-                    startTimesList={startTimesList}
-                    endTimesList={endTimesList}
-                />
-            }
+                }
+            </CSSTransition>
+
+            <CSSTransition
+                in={transitionCalendarStep}
+                timeout={0}
+                classNames={{
+                    enterActive: 'animate__bounceIn',
+                    exitActive: 'animate__bounceOut'
+                }}
+                onEnter={onEnter}
+                onExited={onExited}>
+                {() => (
+                    isCalendarStep &&
+                    <CalendarComponent
+                        settings={bookingData[activeBooking].calendar_settings}
+                        backButtonClick={backToStepBooking}
+                        setStep={setFormStep}
+                        onChange={onChangeDate}
+                        startDate={startDate}
+                        endDate={endDate}
+                        startHour={startHour}
+                        endHour={endHour}
+                        onChangeStartHour={onChangeStartHour}
+                        onChangeEndHour={onChangeEndHour}
+                        onClickMonth={onClickMonth}
+                        onClickYear={onClickYear}
+                        startTimesList={startTimesList}
+                        endTimesList={endTimesList}
+                    />
+                )}
+            </CSSTransition>
+
             {
                 isFormStep &&
                 <FormComponent
