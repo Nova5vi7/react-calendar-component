@@ -13,6 +13,7 @@ const CalendarComponent = ({
                                backButtonClick,
                                setStep,
                                onChange,
+                               dateValue,
                                startDate,
                                endDate,
                                startHour,
@@ -79,16 +80,31 @@ const CalendarComponent = ({
                     </div>
                 </div> : null
             }
-            <Calendar
-                locale='de'
-                selectRange={settings.view === 'month'}
-                view={settings.view}
-                onChange={onChange}
-                onClickMonth={onClickMonth}
-                onClickYear={onClickYear}
-                minDate={new Date()}
-                defaultValue={new Date()}
-            />
+            {
+                settings.view === 'month' ?
+                    <Calendar
+                        locale='de'
+                        selectRange={true}
+                        view={settings.view}
+                        onChange={onChange}
+                        onClickMonth={onClickMonth}
+                        onClickYear={onClickYear}
+                        minDate={new Date()}
+                        defaultValue={dateValue}
+                    />
+                    :
+                    <Calendar
+                        locale='de'
+                        selectRange={false}
+                        view={settings.view}
+                        onChange={onChange}
+                        onClickMonth={onClickMonth}
+                        onClickYear={onClickYear}
+                        minDate={new Date()}
+                        value={dateValue}
+                    />
+            }
+
             {
                 settings.view === 'month' ?
                     <TimeRange

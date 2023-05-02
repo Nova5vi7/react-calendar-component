@@ -14,6 +14,7 @@ const BookingStep = () => {
     const [firstStep, setFirstStep] = useState(true)
     const [isCalendarStep, setCalendarStepStatus] = useState(false);
     const [isFormStep, setFormStepStatus] = useState(false);
+    const [dateValue, setDateValue] = useState(new Date());
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
     const [currentMonth, setCurrentMonth] = useState(null);
@@ -158,11 +159,13 @@ const BookingStep = () => {
     };
 
     const onClickMonth = (value) => {
+        setDateValue(value)
         const month = moment(value).format('MMMM');
         setCurrentMonth(month)
     };
 
     const onClickYear = (value) => {
+        setDateValue(value)
         const year = moment(value).format('YYYY');
         setCurrentYear(year);
     };
@@ -261,8 +264,6 @@ const BookingStep = () => {
         )
     }
 
-    // console.log('transitionState', transitionState)
-
     return (
         <div className='booking-block'>
             <StepBlockTitle titleText=''/>
@@ -315,6 +316,7 @@ const BookingStep = () => {
                         backButtonClick={backToStepBooking}
                         setStep={setFormStep}
                         onChange={onChangeDate}
+                        dateValue={dateValue}
                         startDate={startDate}
                         endDate={endDate}
                         startHour={startHour}
